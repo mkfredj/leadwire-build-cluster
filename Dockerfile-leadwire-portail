@@ -33,6 +33,7 @@ ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ##APM
 ADD /requirements/ /requirements/
 
+ARG VERSION_LEADWIRE
 RUN sh /requirements/script/apm-install.sh
 
 ## OPENSSL
