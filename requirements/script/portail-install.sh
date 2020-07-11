@@ -1,8 +1,7 @@
 #!/bin/sh
 
 version=${VERSION_PORTAIL}
-git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:1811e208518a120b3da462afc944f95df0accf0c@github.com/leadwire-apm/leadwire-portail.git /usr/share/leadwire-portail
-
+git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:${GIT_TOKEN}:@github.com/leadwire-apm/leadwire-portail.git
 chown -R nginx:nginx /usr/share/leadwire-portail
 cd /usr/share/leadwire-portail
 #sudo -u nginx sh /usr/share/leadwire-portail/get_composer.sh
