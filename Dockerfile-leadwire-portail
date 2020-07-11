@@ -34,6 +34,7 @@ ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ADD /requirements/ /requirements/
 
 ARG VERSION_PORTAIL
+ARG GIT_TOKEN
 RUN sh /requirements/script/portail-install.sh
 
 ## OPENSSL
