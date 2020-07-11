@@ -1,6 +1,7 @@
 FROM centos:7
 ARG GIT_TOKEN
-git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:${GIT_TOKEN}@github.com/leadwire-apm/leadwire-portail.git /leadwire-portail
+RUN yum install -y git
+RUN git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:${GIT_TOKEN}@github.com/leadwire-apm/leadwire-portail.git /leadwire-portail
 
 FROM centos:7
 ARG VERSION_PORTAIL
@@ -15,7 +16,7 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.build-date="${BUILD_DATE}"
 
 ## TOOLS
-RUN yum -y install sudo unzip crontabs git
+RUN yum -y install sudo crontabs
 
 #Repos
 RUN yum install epel-release -y
