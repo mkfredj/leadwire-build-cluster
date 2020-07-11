@@ -1,0 +1,64 @@
+FROM centos/systemd
+
+MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
+
+LABEL org.label-schema.schema-version="leadwire-core-1.3" \
+    org.label-schema.name="Lead Wire APM" \
+    org.label-schema.vendor="Lead Wire SAS" \
+    org.label-schema.license="Lead Wire Private Use" \
+    org.label-schema.build-date="20200502"
+
+##Update
+RUN yum -y update
+
+
+## TOOLS
+RUN yum -y install sudo crontabs 
+
+
+#Repos
+RUN yum install epel-release -y
+ADD /requirements/repo/lemonldap-ng.repo /etc/yum.repos.d/lemonldap-ng.repo
+
+
+##LEMON-LDAP NG
+RUN yum install -y nginx lemonldap-ng-* lemonldap-ng-fastcgi-server lasso lasso-perl perl-Digest-HMAC perl-String-* perl-LWP-Protocol-https perl-CPAN urw-base35-fonts-legacy perl-App-cpanminus.noarch  && systemctl enable llng-fastcgi-server && systemctl enable nginx 
+RUN cd /usr/local/share && cpanm Email::Sender::Transport::SMTPS; exit 0
+RUN cd /usr/local/share && perl -MCPAN -e 'install Email::Sender::Transport::SMTPS'
+RUN cd /usr/local/share && perl -MCPAN -e 'install GD::SecurityImage'
+RUN cd /usr/local/share && cpanm Apache::Session::Store::LDAP; exit 0
+RUN sed 's,/usr/share/fonts/default/Type1/,/usr/share/X11/fonts/urw-fonts/,g' -i /etc/ImageMagick-6/type-ghostscript.xml
+
+ADD /requirements/ /requirements/
+
+RUN cp /requirements/images/kibana.png /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/kibana.png && \
+    cp /requirements/images/leadwire-icon.jpg /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/leadwire-icon.jpg && \ 
+    cp /requirements/images/leadwire-bg.jpg /usr/share/lemonldap-ng/portal/htdocs/static/common/backgrounds/leadwire-bg.jpg && \
+    mkdir -p /usr/share/lemonldap-ng/portal/htdocs/static/leadwire/logo/ && \
+    cp /requirements/images/leadwire-logo.jpg /usr/share/lemonldap-ng/portal/htdocs/static/leadwire/logo/leadwire-logo.jpg && \
+    cp /requirements/images/grafana.png /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/grafana.png && \
+    cp /requirements/images/prometheus.gif /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/prometheus.gif && \
+    cp /requirements/images/leadwire-favicon.png /usr/share/lemonldap-ng/portal/htdocs/static/common/favicon.ico && \
+    cp /requirements/images/leadwire-favicon.png /usr/share/lemonldap-ng/manager/htdocs/static/logos/favicon.ico 
+
+RUN mkdir -p /certificates/ && openssl req \
+    -new \
+    -newkey rsa:2048 \
+    -days 3650 \
+    -nodes \
+    -x509 \
+    -subj "/C=FR/ST=Paris/L=Paris/O=leadwire/CN=*.leadwire.io" \
+    -keyout /certificates/server.key \
+    -out /certificates/server.crt && openssl x509 -in /certificates/server.crt -out /certificates/server.pem -outform PEM
+
+
+RUN sed -i "s/example\.com/leadwire.io/g" /etc/nginx/conf.d/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json  &&  \
+    /usr/sbin/nginx && sudo -u apache /usr/libexec/lemonldap-ng/sbin/llng-fastcgi-server  && \
+    sh /requirements/script/lemonldap-install.sh
+
+EXPOSE 80 443 
+
+RUN chmod 755 /requirements/script/lemonldap-entrypoint.sh && \
+      sed -i 's# \$lmremote_custom##g' /etc/nginx/*.conf 
+
+CMD ["/requirements/script/lemonldap-entrypoint.sh"]

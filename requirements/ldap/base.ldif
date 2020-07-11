@@ -1,0 +1,26 @@
+dn: dc=leadwire,dc=io
+dc: leadwire
+objectClass: top
+objectClass: domain
+
+dn: cn=admin,dc=leadwire,dc=io
+objectClass: organizationalRole
+cn: admin
+description: LDAP Manager
+
+dn: ou=people,dc=leadwire,dc=io
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=sessions,dc=leadwire,dc=io
+objectClass: organizationalUnit
+ou: sessions
+
+dn: ou=roles,dc=leadwire,dc=io
+objectClass: organizationalUnit
+ou: roles
+
+dn: ou=apm,ou=roles,dc=leadwire,dc=io
+objectClass: organizationalUnit
+ou: roles
+

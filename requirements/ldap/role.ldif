@@ -1,0 +1,6 @@
+dn: cn=admin,ou=apm,ou=roles,dc=leadwire,dc=io
+objectClass: organizationalRole
+objectClass: top
+cn: admin
+ou: apm
+roleOccupant: cn=admin,ou=people,dc=leadwire,dc=io

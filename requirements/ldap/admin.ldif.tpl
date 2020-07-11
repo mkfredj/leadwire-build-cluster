@@ -1,0 +1,12 @@
+dn: cn=admin,ou=people,dc=leadwire,dc=io
+cn: admin
+objectclass: top
+description: admin
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+sn: ADMIN
+givenName: Admin
+mail:	contact@leadwire.io
+uid: admin
+userPassword: __replace__

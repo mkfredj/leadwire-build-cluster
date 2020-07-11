@@ -1,0 +1,13 @@
+[lemonldap-ng]
+name=LemonLDAP::NG packages
+baseurl=https://lemonldap-ng.org/redhat/2.0/$releasever/noarch
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
+
+[lemonldap-ng-extras]
+name=LemonLDAP::NG extra packages
+baseurl=https://lemonldap-ng.org/redhat/extras/$releasever
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-OW2
