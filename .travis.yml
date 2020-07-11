@@ -7,12 +7,13 @@ env:
   - VERSION_ODFE=1.7.0
   - VERSION_SENTINL=v7.6.1-b5
   - VERSION_LEADWIRE=1.0.0
+  - DOCKER_REGISTRY_URL=hub.docker.com
   
 jobs:
   include:
     - stage: build docker image
       script:
-      - echo "$DOCKER_PASSWORD" | docker login -u leadwire --password-stdin
+      - docker login -u "leadwire" -p $DOCKER_PASSWORD 
       - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=$VERSION_PORTAIL  -f Dockerfile-leadwire-portail . 
       - docker tag apm-leadwire-portail leadwire/apm-leadwire-portail:$VERSION_LEADWIRE
       - docker push leadwire/apm-leadwire-portail:$VERSION_LEADWIRE
