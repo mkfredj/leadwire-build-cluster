@@ -1,10 +1,8 @@
 #!/bin/sh
 
 version=${VERSION_PORTAIL}
-curl -LJO  -H 'Authorization: token bc9ef0f060b991031b7208211b1767d5df10da16' https://github.com/leadwire-apm/leadwire-portail/archive/v${version}.tar.gz
-tar -xzvf leadwire-portail-${version}.tar.gz -C /usr/share/
-rm -f leadwire-portail-${version}.tar.gz
-mv /usr/share/leadwire-portail-${version} /usr/share/leadwire-portail
+git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:1811e208518a120b3da462afc944f95df0accf0c@github.com/leadwire-apm/leadwire-portail.git /usr/share/leadwire-portail
+
 chown -R nginx:nginx /usr/share/leadwire-portail
 cd /usr/share/leadwire-portail
 #sudo -u nginx sh /usr/share/leadwire-portail/get_composer.sh
