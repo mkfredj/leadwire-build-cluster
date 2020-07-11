@@ -6,7 +6,7 @@ RUN yum install -y  nodejs
 RUN curl -sL https://github.com/leadwire-apm/reports/archive/v${VERSION_SENTINL}.zip -o v${VERSION_SENTINL}.zip && unzip v${VERSION_SENTINL}.zip && mv reports-${VERSION_SENTINL} sentinl  && cd sentinl && npm install 
 
 ARG VERSION_ODFE
-FROM amazon/opendistro-for-elasticsearch-kibana:${VERSION_ODFE}
+FROM amazon/opendistro-for-elasticsearch-kibana:$VERSION_ODFE
 
 ARG BUILD_DATE
 
