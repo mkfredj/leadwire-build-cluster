@@ -17,7 +17,7 @@ jobs:
       script:
       - docker login -u "leadwire" -p $DOCKER_PASSWORD 
       - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN}   -f Dockerfile-leadwire-portail . 
-      - docker tag apm-leadwire-portail leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
+      - docker tag leadwire/apm-leadwire-portail leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
       - docker push leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
       - docker build -t leadwire/apm-leadwire-socket.io --build-arg VERSION_PORTAIL=${VERSION_PORTAIL}  -f Dockerfile-leadwire-socket.io . 
       - docker tag apm-leadwire-socket.io leadwire/apm-leadwire-socket.io:${VERSION_LEADWIRE}
