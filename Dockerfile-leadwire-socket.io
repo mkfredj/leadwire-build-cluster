@@ -21,6 +21,8 @@ RUN yum install epel-release -y
 RUN yum install -y nodejs
 RUN yum install -y openssl
 
+ARG VERSION_PORTAIL
+ARG GIT_TOKEN
 
 ADD /requirements/ /requirements/
 RUN sh /requirements/script/socket-install.sh
