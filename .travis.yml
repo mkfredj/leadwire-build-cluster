@@ -12,7 +12,7 @@ jobs:
   include:
     - stage: build docker image
       script:
-      - docker login -u leadwire -p $DOCKER_PASSWORD 
+      - docker login --username leadwire --password $DOCKER_PASSWORD 
       - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=$VERSION_PORTAIL  -f Dockerfile-leadwire-portail . 
       - docker tag apm-leadwire-portail leadwire/apm-leadwire-portail:$VERSION_LEADWIRE
       - docker push leadwire/apm-leadwire-portail:$VERSION_LEADWIRE
