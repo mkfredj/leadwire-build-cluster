@@ -1,7 +1,9 @@
 FROM centos:7
-
-ARG VERSION_PORTAIL
 ARG GIT_TOKEN
+git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:${GIT_TOKEN}@github.com/leadwire-apm/leadwire-portail.git /leadwire-portail
+
+FROM centos:7
+ARG VERSION_PORTAIL
 ARG BUILD_DATE
 
 MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
@@ -33,6 +35,8 @@ RUN yum install -y php-fpm && systemctl enable php-fpm.service
 
 ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ADD /requirements/ /requirements/
+
+COPY --chown=nginx:nginx --from=0 /usr/share/leadwire-portail /usr/share/leadwire-portail/
 
 RUN sh /requirements/script/portail-install.sh
 
