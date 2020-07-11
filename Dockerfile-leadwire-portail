@@ -34,7 +34,7 @@ ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ADD /requirements/ /requirements/
 
 ARG VERSION_LEADWIRE
-RUN sh /requirements/script/apm-install.sh
+RUN sh /requirements/script/portail-install.sh
 
 ## OPENSSL
 RUN mkdir -p /certificates/ && openssl req \
