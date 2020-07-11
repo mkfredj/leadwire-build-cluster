@@ -1,14 +1,16 @@
+ARG VERSION_SENTINL
 FROM centos/systemd
 RUN yum install -y unzip  git 
 RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
 RUN yum install -y  nodejs 
-RUN curl -sL https://github.com/leadwire-apm/reports/archive/v7.6.1-b5.zip -o v7.6.1-b5.zip && unzip v7.6.1-b5.zip && mv reports-7.6.1-b5 sentinl  && cd sentinl && npm install 
+RUN curl -sL https://github.com/leadwire-apm/reports/archive/v${VERSION_SENTINL}.zip -o v${VERSION_SENTINL}.zip && unzip v${VERSION_SENTINL}.zip && mv reports-${VERSION_SENTINL} sentinl  && cd sentinl && npm install 
 
-FROM amazon/opendistro-for-elasticsearch-kibana:1.7.0
+ARG VERSION_ODFE
+FROM amazon/opendistro-for-elasticsearch-kibana:${VERSION_ODFE}
 
 MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
 
-LABEL org.label-schema.schema-version="kibana-1.7" \
+LABEL org.label-schema.schema-version="kibana-${VERSION_ODFE}" \
     org.label-schema.name="Lead Wire APM" \
     org.label-schema.vendor="Lead Wire SAS" \
     org.label-schema.license="Lead Wire Private Use" \
