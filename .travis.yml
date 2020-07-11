@@ -1,4 +1,5 @@
-dist: trusty
+services:
+  - docker
 
 env:
   - VERSION_PORTAIL=1.3.10
