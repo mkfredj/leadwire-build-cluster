@@ -2,6 +2,7 @@ services:
   - docker
 
 env:
+  global:
   - VERSION_PORTAIL=1.3.10
   - VERSION_ODFE=1.7.0
   - VERSION_SENTINL=v7.6.1-b5
