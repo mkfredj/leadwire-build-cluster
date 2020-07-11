@@ -31,7 +31,7 @@ ARG VERSION_PORTAIL
 ARG GIT_TOKEN
 
 ADD /requirements/ /requirements/
-COPY --chown=nginx:nginx --from=0 /leadwire-portail /usr/share/leadwire-portail/
+COPY --from=0 /leadwire-portail /usr/share/leadwire-portail/
 
 RUN sh /requirements/script/socket-install.sh
 
