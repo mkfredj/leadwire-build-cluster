@@ -9,13 +9,14 @@ env:
   - VERSION_LEADWIRE=1.0.0
   - DOCKER_REGISTRY_URL=hub.docker.com
   - DOCKER_PASSWORD=${DOCKER_PASSWORD}
+  - GIT_TOKEN=${GIT_TOKEN}
   
 jobs:
   include:
     - stage: build docker image
       script:
       - docker login -u "leadwire" -p $DOCKER_PASSWORD 
-      - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=${VERSION_PORTAIL}  -f Dockerfile-leadwire-portail . 
+      - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN}   -f Dockerfile-leadwire-portail . 
       - docker tag apm-leadwire-portail leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
       - docker push leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
       - docker build -t leadwire/apm-leadwire-socket.io --build-arg VERSION_PORTAIL=${VERSION_PORTAIL}  -f Dockerfile-leadwire-socket.io . 
