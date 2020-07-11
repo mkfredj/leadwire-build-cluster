@@ -1,7 +1,12 @@
 FROM centos:7
+ARG GIT_TOKEN
+RUN yum install -y git
+RUN git clone --depth=50 --branch=evol/lot3 https://leadwire-apm:${GIT_TOKEN}@github.com/leadwire-apm/leadwire-portail.git /leadwire-portail
+
+
+FROM centos:7
 
 ARG VERSION_PORTAIL
-ARG GIT_TOKEN
 ARG BUILD_DATE
 
 MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
@@ -26,6 +31,8 @@ ARG VERSION_PORTAIL
 ARG GIT_TOKEN
 
 ADD /requirements/ /requirements/
+COPY --chown=nginx:nginx --from=0 /leadwire-portail /usr/share/leadwire-portail/
+
 RUN sh /requirements/script/socket-install.sh
 
 
