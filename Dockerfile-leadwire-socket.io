@@ -18,7 +18,7 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.build-date="${BUILD_DATE}"
 
 ## TOOLS
-RUN yum -y install sudo unzip crontabs  
+RUN yum -y install sudo crontabs  
 
 #Repos
 RUN yum install epel-release -y
