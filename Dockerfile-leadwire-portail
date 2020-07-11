@@ -37,7 +37,7 @@ RUN yum install -y php-fpm && systemctl enable php-fpm.service
 ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ADD /requirements/ /requirements/
 
-COPY --chown=nginx:nginx --from=0 /usr/share/leadwire-portail /usr/share/leadwire-portail/
+COPY --chown=nginx:nginx --from=0 /leadwire-portail /usr/share/leadwire-portail/
 
 RUN sh /requirements/script/portail-install.sh
 
