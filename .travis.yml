@@ -8,6 +8,7 @@ env:
   - VERSION_SENTINL=v7.6.1-b5
   - VERSION_LEADWIRE=1.0.0
   - DOCKER_REGISTRY_URL=hub.docker.com
+  - DOCKER_PASSWORD=${DOCKER_PASSWORD}
   
 jobs:
   include:
