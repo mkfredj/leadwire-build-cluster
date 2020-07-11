@@ -1,6 +1,6 @@
 #!/bin/sh
 
-version=${VERSION_LEADWIRE}
+version=${VERSION_PORTAIL}
 curl -LJO  -H 'Authorization: token bc9ef0f060b991031b7208211b1767d5df10da16' https://github.com/leadwire-apm/leadwire-portail/archive/v${version}.tar.gz
 tar -xzvf leadwire-portail-${version}.tar.gz -C /usr/share/
 rm -f leadwire-portail-${version}.tar.gz
