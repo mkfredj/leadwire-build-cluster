@@ -9,7 +9,7 @@ LABEL org.label-schema.schema-version="leadwire-portail-1.3" \
     org.label-schema.build-date="20200502"
 
 ##Update
-RUN yum -y update
+#RUN yum -y update
 
 ## TOOLS
 RUN yum -y install sudo unzip crontabs  
@@ -33,7 +33,7 @@ ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ##APM
 ADD /requirements/ /requirements/
 
-ARG VERSION_LEADWIRE
+ARG VERSION_PORTAIL
 RUN sh /requirements/script/portail-install.sh
 
 ## OPENSSL
