@@ -10,7 +10,7 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.name="Lead Wire APM" \
     org.label-schema.vendor="Lead Wire SAS" \
     org.label-schema.license="Private Use" \
-    org.label-schema.build-date="${$BUILD_DATE}"
+    org.label-schema.build-date="${BUILD_DATE}"
 
 ## TOOLS
 RUN yum -y install sudo unzip crontabs  
