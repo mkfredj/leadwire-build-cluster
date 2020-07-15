@@ -24,9 +24,9 @@ jobs:
 #      - docker build -t leadwire/apm-leadwire-socket.io --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -f Dockerfile-leadwire-socket.io . 
 #      - docker tag leadwire/apm-leadwire-socket.io leadwire/apm-leadwire-socket.io:${VERSION_LEADWIRE}
 #      - docker push leadwire/apm-leadwire-socket.io:${VERSION_LEADWIRE}
-#      - docker build -t leadwire/apm-leadwire-core --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-core . 
-#      - docker tag leadwire/apm-leadwire-core leadwire/apm-leadwire-core:${VERSION_LEADWIRE}
-#      - docker push leadwire/apm-leadwire-core:${VERSION_LEADWIRE}
+      - docker build -t leadwire/apm-leadwire-core --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-core . 
+      - docker tag leadwire/apm-leadwire-core leadwire/apm-leadwire-core:${VERSION_LEADWIRE}
+      - docker push leadwire/apm-leadwire-core:${VERSION_LEADWIRE}
 #      - docker build -t leadwire/apm-leadwire-ldap --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-ldap . 
 #      - docker tag leadwire/apm-leadwire-ldap leadwire/apm-leadwire-ldap:${VERSION_LEADWIRE}
 #      - docker push leadwire/apm-leadwire-ldap:${VERSION_LEADWIRE}

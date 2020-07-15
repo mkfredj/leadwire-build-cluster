@@ -16,7 +16,9 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.build-date="${BUILD_DATE}"
 
 ## TOOLS
-RUN yum -y install sudo crontabs unzip
+ADD /requirements/repo/mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
+
+RUN yum -y install sudo crontabs unzip mongodb-org-shell
 
 #Repos
 RUN yum install epel-release -y

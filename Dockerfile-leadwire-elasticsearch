@@ -1,0 +1,16 @@
+FROM amazon/opendistro-for-elasticsearch:1.7.0
+
+USER 0
+RUN ulimit -n 65535
+RUN echo "elasticsearch soft nofile 65535" | tee --append /etc/security/limits.conf && \
+    echo "elasticsearch hard nofile 65535" | tee --append /etc/security/limits.conf && \
+    echo "elasticsearch soft memlock unlimited" | tee --append /etc/security/limits.conf && \
+    echo "elasticsearch hard memlock unlimited" | tee --append /etc/security/limits.conf && \
+    echo "root soft nofile 65535" | tee --append /etc/security/limits.conf && \
+    echo "root hard nofile 65535" | tee --append /etc/security/limits.conf && \
+    echo "root soft memlock unlimited" | tee --append /etc/security/limits.conf && \
+    echo "root hard memlock unlimited" | tee --append /etc/security/limits.conf  
+
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+# Dummy overridable parameter parsed by entrypoint
+CMD ["eswrapper"]

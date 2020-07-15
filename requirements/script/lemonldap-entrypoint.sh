@@ -30,5 +30,6 @@ sed -i -e 's/^;checkTime.*/checkTime = 1/' /etc/lemonldap-ng/lemonldap-ng.ini
 
 # Run the fastcgi server withing this session so that we can get logs in 
 # STDOUT/STDERR
-/usr/sbin/nginx
-sudo -u apache /usr/libexec/lemonldap-ng/sbin/llng-fastcgi-server --foreground
+/usr/sbin/nginx -g 'daemon off;'
+sudo -u apache /usr/libexec/lemonldap-ng/sbin/llng-fastcgi-server
+
