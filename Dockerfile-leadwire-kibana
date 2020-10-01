@@ -5,7 +5,7 @@ RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
 RUN yum install -y  nodejs 
 RUN curl -sL https://github.com/leadwire-apm/reports/archive/v${VERSION_SENTINL}.zip -o v${VERSION_SENTINL}.zip && unzip v${VERSION_SENTINL}.zip && mv reports-${VERSION_SENTINL} sentinl  && cd sentinl && npm install 
 
-FROM amazon/opendistro-for-elasticsearch-kibana:1.7.0
+FROM amazon/opendistro-for-elasticsearch-kibana:1.10.1
 
 ARG BUILD_DATE
 
@@ -29,7 +29,5 @@ ENV NODE_OPTIONS="--max-old-space-size=4096"
 COPY --chown=kibana:kibana --from=0 /sentinl /usr/share/kibana/plugins/sentinl/
 
 RUN rm -fr /usr/share/kibana/optimize/*  /tmp/requirements
-
-EXPOSE 5601
 
 CMD ["/usr/local/bin/kibana-docker"]
