@@ -3,7 +3,7 @@ services:
 
 env:
   global:
-  - VERSION_PORTAIL=1.3.12
+  - VERSION_PORTAIL=1.3.13
   - VERSION_SENTINL=7.7.0-b1
   - VERSION_LEADWIRE=1.0.3
   - DOCKER_REGISTRY_URL=hub.docker.com
@@ -14,14 +14,14 @@ jobs:
   include:
     - stage: build docker image
       script:
-      - docker login -u "leadwire" -p $DOCKER_PASSWORD 
-      - docker build -t leadwire/apm-leadwire-kibana --build-arg VERSION_SENTINL=${VERSION_SENTINL} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-kibana . 
-      - docker tag leadwire/apm-leadwire-kibana leadwire/apm-leadwire-kibana:${VERSION_LEADWIRE}
-      - docker push leadwire/apm-leadwire-kibana:${VERSION_LEADWIRE}
-#      - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -f Dockerfile-leadwire-portail . 
-#      - docker tag leadwire/apm-leadwire-portail leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
-#      - docker push leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
-#      - docker build -t leadwire/apm-leadwire-socket.io --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -f Dockerfile-leadwire-socket.io . 
+#      - docker login -u "leadwire" -p $DOCKER_PASSWORD 
+#      - docker build -t leadwire/apm-leadwire-kibana --build-arg VERSION_SENTINL=${VERSION_SENTINL} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-kibana . 
+#      - docker tag leadwire/apm-leadwire-kibana leadwire/apm-leadwire-kibana:${VERSION_LEADWIRE}
+#      - docker push leadwire/apm-leadwire-kibana:${VERSION_LEADWIRE}
+      - docker build -t leadwire/apm-leadwire-portail --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -f Dockerfile-leadwire-portail . 
+      - docker tag leadwire/apm-leadwire-portail leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
+      - docker push leadwire/apm-leadwire-portail:${VERSION_LEADWIRE}
+      - docker build -t leadwire/apm-leadwire-socket.io --build-arg VERSION_PORTAIL=${VERSION_PORTAIL} --build-arg GIT_TOKEN=${GIT_TOKEN} --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ') -f Dockerfile-leadwire-socket.io . 
 #      - docker tag leadwire/apm-leadwire-socket.io leadwire/apm-leadwire-socket.io:${VERSION_LEADWIRE}
 #      - docker push leadwire/apm-leadwire-socket.io:${VERSION_LEADWIRE}
 #      - docker build -t leadwire/apm-leadwire-core --build-arg BUILD_DATE=$(date -u +'%Y-%m-%dT%H:%M:%SZ')  -f Dockerfile-leadwire-core . 
