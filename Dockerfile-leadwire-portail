@@ -22,7 +22,13 @@ RUN yum -y install sudo crontabs unzip mongodb-org-shell
 
 #Repos
 RUN yum install epel-release -y
-RUN curl -s http://rpms.remirepo.net/enterprise/remi-release-7.rpm -o remi-release-7.rpm && rpm -Uvh remi-release-7.rpm && yum install yum-utils -y && yum-config-manager --enable remi-php71 && rm -f remi-release-7.rpm
+RUN    curl -s https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm -o epel-release-latest-7.noarch.rpm \ 
+    && curl -s https://rpms.remirepo.net/enterprise/remi-release-7.rpm -o remi-release-7.rpm \ 
+    && rpm -Uvh remi-release-7.rpm epel-release-latest-7.noarch.rpm \
+    && rm -f remi-release-7.rpm epel-release-latest-7.noarch.rpm 
+
+RUN yum install yum-utils \ 
+    && yum-config-manager --enable remi-php74
 
 ## NGINX
 ##LEMON-LDAP NG
@@ -31,7 +37,7 @@ ADD /requirements/config/apm-nginx.conf /etc/nginx/conf.d/
 
 
 # Necessary PHP Extensions
-RUN yum --enablerepo=remi,remi-php71 install -y php-opcache php-pecl-apcu php-cli php-pear php-pecl-mongodb php-gd php-mbstring php-mcrypt php-xml php-ldap php-json
+RUN yum --enablerepo=remi,remi-php74 install -y php-opcache php-pecl-apcu php-cli php-pear php-pecl-mongodb php-gd php-mbstring php-mcrypt php-xml php-ldap php-json
 
 # Php-Fpm
 RUN yum install -y php-fpm && systemctl enable php-fpm.service
