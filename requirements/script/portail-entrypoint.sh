@@ -53,12 +53,12 @@ until [ "$response" = "200" ]; do
 done
 
 # wait for Kibana to start...
-host="${LEADWIRE_KIBANA_HOST}:${LEADWIRE_KIBANA_PORT}"
+#host="${LEADWIRE_KIBANA_HOST}:${LEADWIRE_KIBANA_PORT}"
 
-until $(curl -H "x-forwarded-for: 127.0.0.1" -H "x-proxy-user: ${LEADWIRE_ES_USERNAME}" -H "x-proxy-roles: ${LEADWIRE_ES_PASSWORD}" -k --output /dev/null --silent --head --fail "$host"); do
-    printf '.'
-    sleep 1
-done
+#until $(curl -H "x-forwarded-for: 127.0.0.1" -H "x-proxy-user: ${LEADWIRE_ES_USERNAME}" -H "x-proxy-roles: ${LEADWIRE_ES_PASSWORD}" -k --output /dev/null --silent --head --fail "$host"); do
+#    printf '.'
+#    sleep 1
+#done
 
 ###INSTALL LEADWIRE###
 sudo -u nginx php bin/console leadwire:install --env=prod
