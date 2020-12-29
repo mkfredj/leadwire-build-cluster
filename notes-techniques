@@ -1,0 +1,21 @@
+
+rm -f Metricbeat-zookeeper-overview.json metricbeat-windows-service.json metricbeat-vsphere-vm.json metricbeat-vsphere-host.json Metricbeat-uwsgi-overview.json Metricbeat-redis-overview.json Metricbeat-redis-keys.json Metricbeat-rabbitmq-overview.json Metricbeat-nats-overview.json Metricbeat-kafka-overview.json Metricbeat-golang-overview.json Metricbeat-couchdb-overview.json Metricbeat-couchbase-overview.json Metricbeat-consul-overview.json Metricbeat-ceph-overview.json Metricbeat-aerospike-overview.json
+
+
+for i in $(ls Packetbeat-*); do tail -n +3 $i | head -n -3  >> packetbeat-result.json; echo "    ," >> packetbeat-result.json  ; done
+
+sed -i 's#"title": "\[Metricbeat \(.*\)\] #"title": "\[Metricbeat\] \1 #g' app/Resources/templates/v7.10.0/metricbeat/Dashboards.json
+sed -i 's#"title": "\[Filebeat \(.*\)\] #"title": "\[Filebeat\] \1 #g' app/Resources/templates/v7.10.0/filebeat/Dashboards.json
+
+
+sed -i 's#filebeat\-\*#__replace_token__#g' app/Resources/templates/v7.10.0/filebeat/Dashboards.json
+sed -i 's#metricbeat\-\*#__replace_token__#g' app/Resources/templates/v7.10.0/metricbeat/Dashboards.json
+sed -i 's#packetbeat\-\*#__replace_token__#g' app/Resources/templates/v7.10.0/packetbeat/Dashboards.json
+
+
+
+
+
+sed -i 's#\[Filebeat\]#[Logs]#g' app/Resources/templates/v7.10.0/filebeat/Dashboards.json
+sed -i 's#\[Metricbeat\]#[Metrics]#g' app/Resources/templates/v7.10.0/metricbeat/Dashboards.json
+sed -i 's#\[Packetbeat\]#[Network]#g' app/Resources/templates/v7.10.0/packetbeat/Dashboards.json
