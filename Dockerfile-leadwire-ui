@@ -1,0 +1,28 @@
+FROM centos:7 as build
+ARG BRANCH
+ARG GIT_TOKEN
+RUN yum install -y git
+RUN git clone --depth=50 --branch=${BRANCH} https://leadwire-apm:${GIT_TOKEN}@github.com/leadwire-apm/leadwire-portail-reactjs.git /leadwire-portail-reactjs
+RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
+RUN yum install -y nodejs
+RUN cd /leadwire-portail-reactjs && npm install
+RUN cd /leadwire-portail-reactjs && npm run-script build
+
+# production environment
+FROM nginx:stable-alpine
+ARG VERSION_PORTAIL
+ARG BUILD_DATE
+
+MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
+
+LABEL org.label-schema.schema-version="leadwire-portail-ui-${VERSION_PORTAIL}" \
+    org.label-schema.name="Lead Wire APM" \
+    org.label-schema.vendor="Lead Wire SAS" \
+    org.label-schema.license="Private Use" \
+    org.label-schema.build-date="${BUILD_DATE}"
+
+
+COPY --from=build /leadwire-portail-reactjs/build /usr/share/nginx/html
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
+
