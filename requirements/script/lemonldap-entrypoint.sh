@@ -3,6 +3,14 @@
 service cron start
 service anacron start
 
+for PRESERVEFILE in ${PRESERVEFILES} ;
+do
+    if [ ! "$(ls -A ${PRESERVEFILE} &>/dev/null)" ]; then
+        echo "# Restore ${PRESERVEFILE} directory"
+        chown -R www-data:www-data ${PRESERVEFILE}
+        cp -a ${PRESERVEFILE}-orig/* ${PRESERVEFILE}/
+    fi
+done
 
 
 if [ ! -z ${PORTAL_HOSTNAME+x} ]; then
@@ -57,14 +65,8 @@ fi
 
 # Run the fastcgi server withing this session so that we can get logs in 
 # STDOUT/STDERR
-#/usr/sbin/llng-fastcgi-server --foreground&
+/usr/sbin/llng-fastcgi-server --foreground&
 
-#nginx
-
-# Run the fastcgi server withing this session so that we can get logs in 
-# STDOUT/STDERR
-/usr/share/lemonldap-ng/bin/lemonldap-ng-cli
-#sudo  /usr/libexec/lemonldap-ng/sbin/llng-fastcgi-server
 /usr/sbin/nginx -g 'daemon off;'
 
 

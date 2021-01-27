@@ -10,7 +10,7 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.license="Private Use" \ 
     org.label-schema.build-date="${BUILD_DATE}"
 
-ENV SSODOMAIN=example.com \
+ENV SSODOMAIN=leadwire.io \
     LOGLEVEL=info \
     DEBIAN_FRONTEND=noninteractive
 
@@ -86,14 +86,13 @@ RUN mkdir -p /certificates/ && openssl req \
     -out /certificates/server.crt && openssl x509 -in /certificates/server.crt -out /certificates/server.pem -outform PEM
 
 
+RUN sed -i -e "s/example\.com/leadwire.io/g" /etc/nginx/sites-enabled/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json 
+
+RUN /usr/sbin/nginx && \ 
+    service lemonldap-ng-fastcgi-server start && \
+    sh /requirements/script/lemonldap-install.sh   
+
 VOLUME ["/etc/lemonldap-ng","/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
-
-
-RUN sed -i "s/example\.com/leadwire.io/g" /etc/nginx/sites-enabled/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json  && \
-   /usr/sbin/nginx 
-   RUN service lemonldap-ng-fastcgi-server start 
-   RUN sh /requirements/script/lemonldap-install.sh
-
 
 
 EXPOSE 80 443 
