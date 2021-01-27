@@ -1,4 +1,4 @@
-FROM centos:7
+FROM debian:buster
 
 ARG BUILD_DATE
 
@@ -10,21 +10,57 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.license="Private Use" \ 
     org.label-schema.build-date="${BUILD_DATE}"
 
-## TOOLS
-RUN yum -y install sudo crontabs 
+ENV SSODOMAIN=leadwire.io \
+    LOGLEVEL=info \
+    DEBIAN_FRONTEND=noninteractive
 
 
-#Repos
-RUN yum install epel-release -y
-ADD /requirements/repo/lemonldap-ng.repo /etc/yum.repos.d/lemonldap-ng.repo
 
+RUN echo "# Install LemonLDAP::NG source repo" && \
+    apt-get -y update && \
+    apt-get -y install wget apt-transport-https gnupg dumb-init && \
+    wget -O - https://lemonldap-ng.org/_media/rpm-gpg-key-ow2 | apt-key add - && \
+    echo "deb https://lemonldap-ng.org/deb 2.0 main" >/etc/apt/sources.list.d/lemonldap-ng.list
 
-##LEMON-LDAP NG
-RUN yum install -y nginx lemonldap-ng-* lemonldap-ng-fastcgi-server lasso lasso-perl perl-Digest-HMAC perl-String-* perl-LWP-Protocol-https perl-CPAN urw-base35-fonts-legacy perl-App-cpanminus.noarch  && systemctl enable llng-fastcgi-server && systemctl enable nginx 
+RUN apt-get -y update && \
+    echo "# Install LemonLDAP::NG packages" && \
+    apt-get -y install nginx lemonldap-ng cron anacron liblasso-perl libio-string-perl && \
+    echo "# Install LemonLDAP::NG TOTP requirements" && \
+    apt-get -y install libconvert-base32-perl libdigest-hmac-perl lemonldap-ng-fastcgi-server \
+    make libextutils-pkgconfig-perl libmodule-build-tiny-perl libnet-smtps-perl \
+    libmodule-pluggable-perl libemail-simple-perl \
+    libhttp-throwable-perl libmoox-types-mooselike-numeric-perl  libtest-fatal-perl \
+    libemail-sender-perl libcapture-tiny-perl libemail-abstract-perl libemail-address-perl cpanminus
+
 RUN cd /usr/local/share && cpanm Email::Sender::Transport::SMTPS; exit 0
 RUN cd /usr/local/share && perl -MCPAN -e 'install Email::Sender::Transport::SMTPS'
 RUN cd /usr/local/share && perl -MCPAN -e 'install GD::SecurityImage'
-RUN cd /usr/local/share && cpanm Apache::Session::Store::LDAP; exit 0
+RUN cd /usr/local/share && cpanm Apache::Session::Store::LDAP; exit 0 && \  
+    echo "# Install some DB drivers" && \
+    apt-get -y install libdbd-mysql-perl libdbd-pg-perl && \
+    echo "\ndaemon off;" >> /etc/nginx/nginx.conf
+
+COPY /requirements/script/lemonldap-entrypoint.sh /
+
+RUN echo '# Copy orignal configuration' && \
+    cp -a /etc/lemonldap-ng /etc/lemonldap-ng-orig && \
+    cp -a /var/lib/lemonldap-ng/conf /var/lib/lemonldap-ng/conf-orig && \
+    cp -a /var/lib/lemonldap-ng/sessions /var/lib/lemonldap-ng/sessions-orig && \
+    cp -a /var/lib/lemonldap-ng/psessions /var/lib/lemonldap-ng/psessions-orig
+
+RUN echo "# Install nginx configuration files" && \
+    cd /etc/nginx/sites-enabled/ && \
+    ln -s ../../lemonldap-ng/handler-nginx.conf && \
+    ln -s ../../lemonldap-ng/portal-nginx.conf && \
+    ln -s ../../lemonldap-ng/manager-nginx.conf && \
+    ln -s ../../lemonldap-ng/test-nginx.conf
+
+
+RUN echo "# Configure nginx to log to standard streams" && \
+    ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log
+    
+    
 RUN sed 's,/usr/share/fonts/default/Type1/,/usr/share/X11/fonts/urw-fonts/,g' -i /etc/ImageMagick-6/type-ghostscript.xml
 
 ADD /requirements/ /requirements/
@@ -50,9 +86,14 @@ RUN mkdir -p /certificates/ && openssl req \
     -out /certificates/server.crt && openssl x509 -in /certificates/server.crt -out /certificates/server.pem -outform PEM
 
 
-RUN sed -i "s/example\.com/leadwire.io/g" /etc/nginx/conf.d/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json  &&  \
-    /usr/sbin/nginx && sudo -u apache /usr/libexec/lemonldap-ng/sbin/llng-fastcgi-server  && \
-    sh /requirements/script/lemonldap-install.sh
+RUN sed -i -e "s/example\.com/leadwire.io/g" /etc/nginx/sites-enabled/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json 
+
+RUN /usr/sbin/nginx && \ 
+    service lemonldap-ng-fastcgi-server start && \
+    sh /requirements/script/lemonldap-install.sh   
+
+VOLUME ["/etc/lemonldap-ng","/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
+
 
 EXPOSE 80 443 
 
