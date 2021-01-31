@@ -15,19 +15,41 @@ done
 
 if [ ! -z ${PORTAL_HOSTNAME+x} ]; then
     sed -i -e "s/auth.leadwire.io/${PORTAL_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/portal-nginx.conf /etc/nginx/conf.d/portal-nginx.conf
 fi
 if [ ! -z ${MANAGER_HOSTNAME+x} ]; then
     sed -i -e "s/manager.leadwire.io/${MANAGER_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/manager-nginx.conf /etc/nginx/conf.d/manager-nginx.conf
 fi
 if [ ! -z ${HANDLER_HOSTNAME+x} ]; then
     sed -i -e "s/reload.leadwire.io/${HANDLER_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/handler-nginx.conf /etc/nginx/conf.d/handler-nginx.conf
 fi
 if [ ! -z ${APM_HOSTNAME+x} ]; then
     sed -i -e "s/apm.leadwire.io/${APM_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/apm-nginx.conf /etc/nginx/conf.d/apm-nginx.conf
 fi
 if [ ! -z ${KIBANA_HOSTNAME+x} ]; then
     sed -i -e "s/kibana.leadwire.io/${KIBANA_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/kibana-nginx.conf /etc/nginx/conf.d/kibana-nginx.conf
 fi
+if [ ! -z ${ES_HOSTNAME+x} ]; then
+    sed -i -e "s/es.leadwire.io/${ES_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/es-nginx.conf /etc/nginx/conf.d/es-nginx.conf
+fi
+if [ ! -z ${IO_HOSTNAME+x} ]; then
+    sed -i -e "s/io.leadwire.io/${IO_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/io-nginx.conf /etc/nginx/conf.d/io-nginx.conf
+fi
+if [ ! -z ${ALERT_HOSTNAME+x} ]; then
+    sed -i -e "s/alert.leadwire.io/${ALERT_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/alert-nginx.conf /etc/nginx/conf.d/alert-nginx.conf
+fi
+if [ ! -z ${GRAFANA_HOSTNAME+x} ]; then
+    sed -i -e "s/grafana.leadwire.io/${GRAFANA_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
+    cp /etc/nginx/sites.d/grafana-nginx.conf /etc/nginx/conf.d/grafana-nginx.conf
+fi
+
 
 sed -i "s/leadwire\.io/${SSODOMAIN}/" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
 

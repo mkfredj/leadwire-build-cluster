@@ -4,7 +4,7 @@ ARG BUILD_DATE
 
 MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
 
-LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
+LABEL org.label-schema.schema-version="leadwire-core-${VERSION_PORTAIL}" \
     org.label-schema.name="Lead Wire APM" \
     org.label-schema.vendor="Lead Wire SAS" \
     org.label-schema.license="Private Use" \ 
@@ -40,8 +40,6 @@ RUN cd /usr/local/share && cpanm Apache::Session::Store::LDAP; exit 0 && \
     apt-get -y install libdbd-mysql-perl libdbd-pg-perl && \
     echo "\ndaemon off;" >> /etc/nginx/nginx.conf
 
-COPY /requirements/script/lemonldap-entrypoint.sh /
-
 RUN echo '# Copy orignal configuration' && \
     cp -a /etc/lemonldap-ng /etc/lemonldap-ng-orig && \
     cp -a /var/lib/lemonldap-ng/conf /var/lib/lemonldap-ng/conf-orig && \
@@ -73,7 +71,8 @@ RUN cp /requirements/images/kibana.png /usr/share/lemonldap-ng/portal/htdocs/sta
     cp /requirements/images/grafana.png /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/grafana.png && \
     cp /requirements/images/prometheus.gif /usr/share/lemonldap-ng/portal/htdocs/static/common/apps/prometheus.gif && \
     cp /requirements/images/leadwire-favicon.png /usr/share/lemonldap-ng/portal/htdocs/static/common/favicon.ico && \
-    cp /requirements/images/leadwire-favicon.png /usr/share/lemonldap-ng/manager/htdocs/static/logos/favicon.ico 
+    cp /requirements/images/leadwire-favicon.png /usr/share/lemonldap-ng/manager/htdocs/static/logos/favicon.ico && \
+    cp /requirements/script/lemonldap-entrypoint.sh /lemonldap-entrypoint.sh
 
 RUN mkdir -p /certificates/ && openssl req \
     -new \
@@ -85,19 +84,23 @@ RUN mkdir -p /certificates/ && openssl req \
     -keyout /certificates/server.key \
     -out /certificates/server.crt && openssl x509 -in /certificates/server.crt -out /certificates/server.pem -outform PEM
 
-
 RUN sed -i -e "s/example\.com/leadwire.io/g" /etc/nginx/sites-enabled/* /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-1.json 
 
 RUN /usr/sbin/nginx && \ 
     service lemonldap-ng-fastcgi-server start && \
     sh /requirements/script/lemonldap-install.sh   
 
-VOLUME ["/etc/lemonldap-ng","/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
+RUN mkdir -p /etc/nginx/sites.d/ && \
+    cp /requirements/nginx-config/* /etc/nginx/sites.d/ && \
+    rm -f /etc/nginx/conf.d/* && \
+    cp /requirements/nginx-config/ssl.conf.inc /etc/nginx/conf.d/ && \
+    rm -fr /requirements
 
+VOLUME ["/etc/lemonldap-ng","/var/lib/lemonldap-ng/conf", "/var/lib/lemonldap-ng/sessions", "/var/lib/lemonldap-ng/psessions"]
 
 EXPOSE 80 443 
 
-RUN chmod 755 /requirements/script/lemonldap-entrypoint.sh && \
+RUN chmod 755 /lemonldap-entrypoint.sh && \
       sed -i 's# \$lmremote_custom##g' /etc/nginx/*.conf 
 
-CMD ["/requirements/script/lemonldap-entrypoint.sh"]
+CMD ["/lemonldap-entrypoint.sh"]
