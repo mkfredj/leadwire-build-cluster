@@ -4,7 +4,7 @@ build docker image
 
 ```
 
-voir fichier .tarvis.yml
+voir fichier .travis.yml
 
 
 ```
