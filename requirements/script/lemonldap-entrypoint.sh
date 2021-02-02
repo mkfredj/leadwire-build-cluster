@@ -37,10 +37,6 @@ if [ ! -z ${ES_HOSTNAME+x} ]; then
     sed -i -e "s/es.leadwire.io/${ES_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
     cp /etc/nginx/sites.d/es-nginx.conf /etc/nginx/conf.d/es-nginx.conf
 fi
-if [ ! -z ${IO_HOSTNAME+x} ]; then
-    sed -i -e "s/io.leadwire.io/${IO_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
-    cp /etc/nginx/sites.d/io-nginx.conf /etc/nginx/conf.d/io-nginx.conf
-fi
 if [ ! -z ${ALERT_HOSTNAME+x} ]; then
     sed -i -e "s/alert.leadwire.io/${ALERT_HOSTNAME}/g" /etc/lemonldap-ng/* /var/lib/lemonldap-ng/conf/lmConf-*.json
     cp /etc/nginx/sites.d/alert-nginx.conf /etc/nginx/conf.d/alert-nginx.conf
