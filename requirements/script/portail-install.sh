@@ -12,3 +12,7 @@ sudo -u nginx php /usr/share/leadwire-portail/composer.phar install --no-dev --n
 setfacl -dR -m u:"nginx":rwX -m u:$(whoami):rwX /usr/share/leadwire-portail/var
 setfacl -R -m u:"nginx":rwX -m u:$(whoami):rwX /usr/share/leadwire-portail/var
 
+cd /usr/share/leadwire-portail/
+sudo -u nginx php bin/console assets:install --env=prod
+sudo -u nginx php bin/console assetic:dump --env=prod
+

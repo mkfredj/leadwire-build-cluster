@@ -15,8 +15,6 @@ done
 
 
 cd /usr/share/leadwire-portail/
-sudo -u nginx php bin/console assets:install --env=prod
-sudo -u nginx php bin/console assetic:dump --env=prod
 sudo -u nginx php bin/console cache:clear --env=prod
 
 CONTAINER_ALREADY_STARTED="CONTAINER_ALREADY_STARTED_PLACEHOLDER"
