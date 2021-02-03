@@ -12,8 +12,7 @@ MAINTAINER "Wassim Dhib" <wassim.dhib@leadwire.io>
 LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
     org.label-schema.name="Lead Wire APM" \
     org.label-schema.vendor="Lead Wire SAS" \
-    org.label-schema.license="Private Use" \
-    org.label-schema.build-date="${BUILD_DATE}"
+    org.label-schema.license="Private Use" 
 
 ## TOOLS
 ADD /requirements/repo/mongodb-org-3.4.repo /etc/yum.repos.d/mongodb-org-3.4.repo
@@ -44,12 +43,13 @@ RUN yum install -y php-fpm && systemctl enable php-fpm.service
 
 ADD /requirements/config/www.conf /etc/php-fpm.d/www.conf
 ADD /requirements/script/portail-install.sh /requirements/script/portail-install.sh
-ADD /requirements/script/portail-entrypoint.sh /requirements/script/portail-entrypoint.sh
+ADD /requirements/script/portail-entrypoint.sh /portail-entrypoint.sh
+ADD /requirements/config/.env.build   /tmp/.env
 
 COPY --chown=nginx:nginx --from=0 /leadwire-portail /usr/share/leadwire-portail/
 
 RUN sh /requirements/script/portail-install.sh \
-  && rm -f /requirements/script/portail-install.sh
+  && rm -fr /requirements/
 
 ## OPENSSL
 RUN mkdir -p /certificates/ && openssl req \
@@ -64,5 +64,5 @@ RUN mkdir -p /certificates/ && openssl req \
 
 RUN mkdir -p /var/run/php-fpm/ && chown nginx:nginx /var/run/php-fpm/
 
-CMD ("/requirements/script/portail-entrypoint.sh")
+CMD ("/portail-entrypoint.sh")
 
