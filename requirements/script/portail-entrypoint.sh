@@ -1,6 +1,8 @@
 #!/bin/sh
 
-env | grep LEADWIRE  > /usr/share/leadwire-portail/.env
+passwordcontent=$(slappasswd -h {SSHA} -s ${LEADWIRE_ADMIN_PASSWORD})
+env | grep LEADWIRE | sed '/LEADWIRE_ADMIN_PASSWORD/d'  > /usr/share/leadwire-portail/.env
+echo "LEADWIRE_ADMIN_PASSWORD=${passwordcontent}" >> /usr/share/leadwire-portail/.env
 
 /usr/sbin/nginx
 
