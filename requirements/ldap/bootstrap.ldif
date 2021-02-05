@@ -1,0 +1,49 @@
+dn: cn=tuser,dc=leadwire,dc=io
+changetype: add
+objectClass: inetOrgPerson
+cn: tuser
+givenName: Test
+sn: USER
+displayname: test user
+mail:   test.user@yahoo.fr
+userPassword: tuser_pass
+
+dn: cn=tuser2,dc=leadwire,dc=io
+changetype: add
+objectClass: inetOrgPerson
+cn: tuser2
+givenName: Test2
+sn: USER
+displayname: test user 2
+mail:   test.user2@yahoo.fr
+userPassword: tuser2_pass
+
+dn: ou=people,dc=leadwire,dc=io
+changetype: add
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=sessions,dc=leadwire,dc=io
+changetype: add
+objectClass: organizationalUnit
+ou: sessions
+
+dn: ou=roles,dc=leadwire,dc=io
+changetype: add
+objectClass: organizationalUnit
+ou: roles
+
+dn: ou=apm,dc=leadwire,dc=io
+changetype: add
+objectClass: organizationalUnit
+ou: apm
+
+
+dn: cn=Admins,ou=people,dc=leadwire,dc=io
+changetype: add
+cn: Admins
+objectclass: groupOfUniqueNames
+uniqueMember: cn=tuser,dc=leadwire,dc=io
+
+
+
