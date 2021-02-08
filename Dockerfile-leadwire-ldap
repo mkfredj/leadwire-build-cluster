@@ -15,4 +15,4 @@ LABEL org.label-schema.schema-version="leadwire-portail-${VERSION_PORTAIL}" \
  
 COPY /requirements/ldap/bootstrap.ldif /container/service/slapd/assets/config/bootstrap/ldif/50-bootstrap.ldif
 
-EXPOSE 389
+
