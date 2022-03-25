@@ -10,7 +10,7 @@ RUN cd /leadwire-portail-reactjs && npm install
 RUN cd /leadwire-portail-reactjs && npm run-script build
 
 # production environment
-FROM nginx:stable-alpine
+FROM nginx:1.21-alpine
 ARG VERSION_PORTAIL
 ARG BUILD_DATE
 
